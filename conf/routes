@@ -1,0 +1,9 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+POST    /events                     controllers.EventController.save()
+GET     /events/:id                 controllers.EventController.getLatest(id: String)
+GET     /events/:id/range           controllers.EventController.getRange(id: String, from: Option[Long], to: Option[Long])
+GET     /events/:id/summary         controllers.EventController.getSummary(id: String, from: Option[Long], to: Option[Long])
+
