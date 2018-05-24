@@ -1,12 +1,18 @@
 package controllers
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import com.datastax.driver.core.ResultSet
 import dao._
 import javax.inject._
 import models._
 import play.api.mvc._
 
+import scala.concurrent.Future
+
 @Singleton
 class EventController @Inject()(table: EventTable) extends Controller {
+
+  table.createSchema()
 
   def hello() = Action{
     Ok("Hello!")
@@ -16,10 +22,11 @@ class EventController @Inject()(table: EventTable) extends Controller {
     *
     * @return 201 Created
     */
-//  def save(): Action[Event] = Action.async(parse.json[Event]){ request =>
-//    val event = request.body
-//    ???
-//  }
+  def save(): Action[Event] = Action.async(parse.json[Event]){ request =>
+    val event: Event = request.body
+    val result: Future[ResultSet] = table.save(e = event)
+    result.map(_ => Created("Success"))
+  }
 
   /** Return most recent Event JSON for a given srcId
     *
@@ -27,7 +34,7 @@ class EventController @Inject()(table: EventTable) extends Controller {
     * @return 200 OK (Event JSON) or 404 Not Found
     */
 //  def getLatest(srcId: String): Action[AnyContent] = Action.async{
-//    ???
+//
 //  }
 
   /** Return an array of Event JSON for a given srcId within a time range

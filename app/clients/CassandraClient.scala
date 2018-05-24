@@ -12,7 +12,7 @@ import scala.collection.JavaConverters._
   */
 @Singleton
 class CassandraClient {
-  EmbeddedCassandraServerHelper.startEmbeddedCassandra("cassandra.yaml")
+  EmbeddedCassandraServerHelper.startEmbeddedCassandra()
 
   val Keyspace = "events_api_v1"
 

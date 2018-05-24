@@ -52,58 +52,58 @@ class ApplicationSpec extends PlaySpec with OneAppPerSuite with BeforeAndAfterAl
       results.forall(_ == CREATED) mustBe true
     }
 
-    "get latest event by id" in {
-
-      val result = eventController.getLatest(testSrcId)(FakeRequest())
-      val eventResult = contentAsJson(result).as[Event]
-
-      println(s"\nLatest Event:${pprint(eventResult)}")
-
-      val latestEvent = testEvents.maxBy(_.ts)
-
-      status(result) mustBe OK
-      eventResult mustEqual latestEvent
-    }
-
-    "get a range of events" in {
-
-      val slice = testEvents.slice(2, 8)
-
-      val fromDate = Some(slice.head.ts.getTime)
-      val toDate = Some(slice.last.ts.getTime)
-
-      val result = eventController.getRange(testSrcId, fromDate, toDate)(FakeRequest())
-      val eventResults = contentAsJson(result).as[Seq[Event]]
-
-      println(s"\nRange of Events between ${fromDate.get} and ${toDate.get}: ${pprint(eventResults)}")
-
-      status(result) mustBe OK
-      eventResults mustEqual slice.reverse
-    }
-
-    "get a summary of events" in {
-
-      val slice = testEvents.slice(2, 8)
-
-      val fromDate = Some(slice.head.ts.getTime)
-      val toDate = Some(slice.last.ts.getTime)
-
-      val result = eventController.getSummary(testSrcId, fromDate, toDate)(FakeRequest())
-      val summaryResult = contentAsJson(result).as[EventSummary]
-
-      println(s"\nEvent Summary: ${pprint(summaryResult)}")
-
-      val summary = EventSummary(
-        from = slice.head.ts,
-        to = slice.last.ts,
-        count = slice.size,
-        sum = slice.map(_.count).sum,
-        avg = slice.map(_.count).sum.toDouble / slice.size
-      )
-
-      status(result) mustBe OK
-      summaryResult mustEqual summary
-    }
+//    "get latest event by id" in {
+//
+//      val result = eventController.getLatest(testSrcId)(FakeRequest())
+//      val eventResult = contentAsJson(result).as[Event]
+//
+//      println(s"\nLatest Event:${pprint(eventResult)}")
+//
+//      val latestEvent = testEvents.maxBy(_.ts)
+//
+//      status(result) mustBe OK
+//      eventResult mustEqual latestEvent
+//    }
+//
+//    "get a range of events" in {
+//
+//      val slice = testEvents.slice(2, 8)
+//
+//      val fromDate = Some(slice.head.ts.getTime)
+//      val toDate = Some(slice.last.ts.getTime)
+//
+//      val result = eventController.getRange(testSrcId, fromDate, toDate)(FakeRequest())
+//      val eventResults = contentAsJson(result).as[Seq[Event]]
+//
+//      println(s"\nRange of Events between ${fromDate.get} and ${toDate.get}: ${pprint(eventResults)}")
+//
+//      status(result) mustBe OK
+//      eventResults mustEqual slice.reverse
+//    }
+//
+//    "get a summary of events" in {
+//
+//      val slice = testEvents.slice(2, 8)
+//
+//      val fromDate = Some(slice.head.ts.getTime)
+//      val toDate = Some(slice.last.ts.getTime)
+//
+//      val result = eventController.getSummary(testSrcId, fromDate, toDate)(FakeRequest())
+//      val summaryResult = contentAsJson(result).as[EventSummary]
+//
+//      println(s"\nEvent Summary: ${pprint(summaryResult)}")
+//
+//      val summary = EventSummary(
+//        from = slice.head.ts,
+//        to = slice.last.ts,
+//        count = slice.size,
+//        sum = slice.map(_.count).sum,
+//        avg = slice.map(_.count).sum.toDouble / slice.size
+//      )
+//
+//      status(result) mustBe OK
+//      summaryResult mustEqual summary
+//    }
 
   }
 
